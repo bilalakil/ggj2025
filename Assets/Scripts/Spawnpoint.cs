@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Spawnpoint : MonoBehaviour
 {
-    public GameObject enemyPrefab;
     public DangerZone dangerZone;
 
     void Start()

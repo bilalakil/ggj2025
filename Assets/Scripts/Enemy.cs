@@ -3,13 +3,19 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private DangerZone dangerZone;
+    public DangerZone dangerZone;
+
     private Coroutine goToTarget;
     private Vector3 target = Vector3.zero;
     private float offset = 0.1f;
 
-    void Start()
+    public void Initialise(DangerZone dangerZone)
     {
+        this.dangerZone = dangerZone;
+        if (goToTarget != null)
+        {
+            StopCoroutine(goToTarget);
+        }
         goToTarget = StartCoroutine(GoToTarget());
     }
 
@@ -22,6 +28,7 @@ public class Enemy : MonoBehaviour
     {
         while(Vector3.Distance(transform.position, target) > 0.1f)
         {
+            
             yield return null;
         }
     }
