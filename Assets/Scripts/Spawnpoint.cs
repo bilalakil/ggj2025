@@ -4,6 +4,7 @@ using UnityEngine;
 public class Spawnpoint : MonoBehaviour
 {
     public DangerZone dangerZone;
+    public Color gizmoColor;
 
     void Start()
     {
@@ -17,7 +18,7 @@ public class Spawnpoint : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
+        Gizmos.color = gizmoColor;
         Gizmos.DrawSphere(transform.position, 0.5f);
     }
 

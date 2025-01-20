@@ -3,23 +3,12 @@ using UnityEngine;
 public class DangerZone : MonoBehaviour
 {
     public float radius = 1f;
+    [SerializeField] private Color gizmoColor;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnDrawGizmos()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-        public void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.color = gizmoColor;
+        Gizmos.DrawSphere(transform.position, radius);
     }
 
 }

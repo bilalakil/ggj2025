@@ -5,8 +5,9 @@ public class Enemy : MonoBehaviour
     public DangerZone dangerZone;
 
     private Vector3 target = Vector3.zero;
-    private float threshold = 0.1f;
+    [SerializeField] private float threshold = 0.1f;
     [SerializeField] private float speed = 1f;
+    [SerializeField] private float angleCorrection = -90f;
 
     public void Initialise(DangerZone dangerZone)
     {
@@ -16,7 +17,8 @@ public class Enemy : MonoBehaviour
 
     private Vector3 CalculateNewTarget(Vector3 origin, float radius)
     {
-        return (Vector3)(Random.insideUnitCircle * radius) + origin;
+        var nextTarget = Random.insideUnitCircle * radius;
+        return new Vector3(nextTarget.x, 0, nextTarget.y) + origin;
     }
 
     void Update()
