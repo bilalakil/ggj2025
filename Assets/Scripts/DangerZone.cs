@@ -19,7 +19,7 @@ public class DangerZone : MonoBehaviour
         public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 
 }
