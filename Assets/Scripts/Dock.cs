@@ -1,16 +1,10 @@
 using UnityEngine;
 
-public class Dock : MonoBehaviour
+public class Dock : MonoBehaviour, IDock
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public DockType DockType { get; protected set; }
+    public Transform fishTransform;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }
