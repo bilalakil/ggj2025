@@ -10,7 +10,7 @@ public class HealthManager : MonoBehaviour
     public float HealthRemaining
     {
         get => healthRemainingBacking;
-        set
+        private set
         {
             if (Mathf.Approximately(value, healthRemainingBacking)) return;
             healthRemainingBacking = value;

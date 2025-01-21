@@ -6,7 +6,8 @@ public class Spawnpoint : MonoBehaviour
     public DangerZone dangerZone;
     public Color gizmoColor;
     [SerializeField] private int desiredSpawnCount;
-    
+    public int DesiredSpawnCount => desiredSpawnCount;
+
     private int currentSpawnCount;
     private float timeSinceLastSpawn;
 

@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
@@ -13,6 +15,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float damageInterval = 2.0f;
     [SerializeField] private float damage = 2.0f;
     private float currentTimeInDangerZone;
+    
+    public event Action<Enemy> OnDisabled;
+    
+    public void OnDisable()
+    {
+        OnDisabled?.Invoke(this);
+    }
 
     public void Initialise(DangerZone dangerZone, HealthManager healthManager)
     {
@@ -56,4 +65,5 @@ public class Enemy : MonoBehaviour
             currentTimeInDangerZone = CalculateTimeInDangerZone(Time.deltaTime);
         }
     }
+
 }
