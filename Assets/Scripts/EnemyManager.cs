@@ -1,21 +1,26 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
 public class EnemyManager : MonoBehaviour
 {
-    public GameObject enemyPrefab;
+    public Enemy enemyPrefab;
     public List<Spawnpoint> spawnpoints = new List<Spawnpoint>();
+    [SerializeField] private HealthManager healthManager;
 
-    void Start()
-    {
-        SpawnEnemy();
-    }
-
-    public void SpawnEnemy()
+    public void SpawnEnemy(Spawnpoint spawner)
     {
         // TODO: Add pooling system to reuse enemies
-        var enemy = Instantiate(enemyPrefab, spawnpoints[0].transform.position, Quaternion.identity, this.transform).GetComponent<Enemy>();
-        enemy.Initialise(spawnpoints[0].dangerZone);
+        var enemy = Instantiate(enemyPrefab, spawner.transform.position, Quaternion.identity, this.transform);
+        enemy.Initialise(spawner.dangerZone, healthManager);
     }
 
+    public void Update()
+    {
+        foreach (var spawner in spawnpoints)
+        {
+            if (!spawner.TickAndCheckSpawn()) continue;
+            SpawnEnemy(spawner);
+        }
+    }
 }

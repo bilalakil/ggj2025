@@ -3,15 +3,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public DangerZone dangerZone;
+    public HealthManager healthManager;
 
     private Vector3 target = Vector3.zero;
+    private bool inDangerZone = false;
     [SerializeField] private float threshold = 0.1f;
     [SerializeField] private float speed = 1f;
     [SerializeField] private float angleCorrection = -90f;
+    [SerializeField] private float damageInterval = 2.0f;
+    [SerializeField] private float damage = 2.0f;
+    private float currentTimeInDangerZone;
 
-    public void Initialise(DangerZone dangerZone)
+    public void Initialise(DangerZone dangerZone, HealthManager healthManager)
     {
         this.dangerZone = dangerZone;
+        this.healthManager = healthManager;
         target = CalculateNewTarget(dangerZone.transform.position, dangerZone.radius);
     }
 
@@ -19,6 +25,17 @@ public class Enemy : MonoBehaviour
     {
         var nextTarget = Random.insideUnitCircle * radius;
         return new Vector3(nextTarget.x, 0, nextTarget.y) + origin;
+    }
+
+    private float CalculateTimeInDangerZone(float delta)
+    {
+        if (currentTimeInDangerZone >= damageInterval)
+        {
+            healthManager.TakeHit(damage);
+            return 0.0f;
+        }
+
+        return currentTimeInDangerZone + delta;
     }
 
     void Update()
@@ -31,6 +48,12 @@ public class Enemy : MonoBehaviour
         else
         {
             target = CalculateNewTarget(dangerZone.transform.position, dangerZone.radius);
+        }
+
+        inDangerZone = Vector3.Distance(dangerZone.transform.position, transform.position) <= dangerZone.radius;
+        if (inDangerZone)
+        {
+            currentTimeInDangerZone = CalculateTimeInDangerZone(Time.deltaTime);
         }
     }
 }
