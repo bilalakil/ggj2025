@@ -7,6 +7,11 @@ public class Fish : MonoBehaviour, IDockable
     public IDock CurrentlyDockedTo { get; protected set; }
     public bool IsCurrentlyDocked => CurrentlyDockedTo != null;
 
+    [SerializeField] private float bubbleShootInterval = 2.0f;
+    private float timeSinceLastBubbleShot;
+    
+    public Bullet bulletPrefab;
+
     public Vector3 origin { get; private set; }
 
     [SerializeField] private float yOffset = 2f;
@@ -28,6 +33,11 @@ public class Fish : MonoBehaviour, IDockable
     private void Start()
     {
         origin = transform.position;
+    }
+
+    public void Update()
+    {
+        TickShooter();
     }
 
     private Vector3 GetMousePos()
@@ -56,5 +66,18 @@ public class Fish : MonoBehaviour, IDockable
     {
         Undock();
         transform.position = origin;
+    }
+    
+    private void TickShooter()
+    {
+        if (!IsCurrentlyDocked) return;
+
+        timeSinceLastBubbleShot += Time.deltaTime;
+        if (timeSinceLastBubbleShot < bubbleShootInterval) return;
+        timeSinceLastBubbleShot -= bubbleShootInterval;
+        
+        var enemy = Instantiate(bulletPrefab, transform.position, transform.rotation);
+
+        Debug.Log("Shoot");
     }
 }
