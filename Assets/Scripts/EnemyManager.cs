@@ -1,19 +1,29 @@
-using System;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
     public Enemy enemyPrefab;
+    private List<Enemy> enemyList = new List<Enemy>();
     public List<Spawnpoint> spawnpoints = new List<Spawnpoint>();
     [SerializeField] private HealthManager healthManager;
     private int totalEnemyNumberForLevel;
 
     public void SpawnEnemy(Spawnpoint spawner)
     {
-        // TODO: Add pooling system to reuse enemies
-        var enemy = Instantiate(enemyPrefab, spawner.transform.position, Quaternion.identity, this.transform);
+        Enemy enemy;
+        if (enemyList.Count > 0)
+        {
+            enemy = enemyList[0];
+            enemyList.Remove(enemy);
+            enemy.transform.position = spawner.transform.position;
+        }
+        else
+        {
+            enemy = Instantiate(enemyPrefab, spawner.transform.position, Quaternion.identity, this.transform);
+        }
         enemy.Initialise(spawner.dangerZone, healthManager);
+        enemy.gameObject.SetActive(true);
         enemy.OnDisabled += HandleEnemyDisabled;
     }
 
@@ -43,5 +53,6 @@ public class EnemyManager : MonoBehaviour
             Debug.Log("Win");
             Time.timeScale = 0;
         }
+        enemyList.Add(enemy);
     }
 }

@@ -9,9 +9,18 @@ public class Bullet : MonoBehaviour
     {
         Destroy(this.gameObject, lifetime);
     }
-    
+
     public void Update()
     {
-        transform.Translate(transform.forward * speed*Time.deltaTime);
+        transform.Translate(transform.right * speed * Time.deltaTime, Space.World);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            other.gameObject.SetActive(false);
+            Destroy(this.gameObject); // TODO: Add bubbles pool
+        }
     }
 }
