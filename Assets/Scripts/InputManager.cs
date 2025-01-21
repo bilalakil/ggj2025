@@ -5,6 +5,7 @@ public class InputManager : MonoBehaviour
 {
     public List<Transform> docks = new List<Transform>();
     public float dockingDistance = 1f;
+    public float rotationPerMouseWheel = 10;
 
     void Start()
     {
@@ -20,6 +21,11 @@ public class InputManager : MonoBehaviour
     private void OnDestroy()
     {
         Fish.OnSelectFish -= OnStartMovingFish;
+    }
+
+    public void Update()
+    {
+        CheckMouseWheelInput();
     }
 
     private void OnStartMovingFish(DockType dockTarget)
@@ -44,5 +50,26 @@ public class InputManager : MonoBehaviour
         {
             fish.SetPosition(fish.origin);
         }
+    }
+
+    private void CheckMouseWheelInput()
+    {
+        var input = Input.mouseScrollDelta.y;
+        if (input == 0) return;
+        
+        var (hoverTarget, _) = GetHoverTarget<IRotateable>();
+        if (hoverTarget == null) return;
+        
+        // TODO: Consider framerate independence
+        var rotation = input * rotationPerMouseWheel;
+        hoverTarget.AddRotation(rotation);
+    }
+
+    private (T component, GameObject containingObject) GetHoverTarget<T>()
+    {
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        return Physics.Raycast(ray, out var hitInfo) 
+            ? (hitInfo.transform.GetComponent<T>(), hitInfo.transform.gameObject)
+            : (default, null);
     }
 }
