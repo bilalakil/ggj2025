@@ -28,7 +28,7 @@ public class HealthManager : MonoBehaviour
     public void TakeHit(float damage)
     {
         HealthRemaining -= damage;
-        if (HealthRemaining < 0)
+        if (HealthRemaining <= 0)
         {
             Time.timeScale = 0;
         }
