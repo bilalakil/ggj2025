@@ -76,8 +76,6 @@ public class Fish : MonoBehaviour, IDockable
         if (timeSinceLastBubbleShot < bubbleShootInterval) return;
         timeSinceLastBubbleShot -= bubbleShootInterval;
         
-        var enemy = Instantiate(bulletPrefab, transform.position, transform.rotation);
-
-        Debug.Log("Shoot");
+        Instantiate(bulletPrefab, transform.position, transform.rotation);
     }
 }
