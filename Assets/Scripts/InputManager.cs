@@ -3,16 +3,17 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public List<Transform> docks = new List<Transform>();
     public float dockingDistance = 1f;
     public float rotationPerMouseWheel = 10;
+    
+    private readonly List<Dock> docks = new();
 
     void Start()
     {
         var dockObjects = FindObjectsByType<Dock>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var dockObject in dockObjects)
         {
-            docks.Add(dockObject.transform);
+            docks.Add(dockObject);
         }
         Fish.OnSelectFish += OnStartMovingFish;
         Fish.OnReleaseFish += OnReleaseFish;
@@ -21,6 +22,7 @@ public class InputManager : MonoBehaviour
     private void OnDestroy()
     {
         Fish.OnSelectFish -= OnStartMovingFish;
+        Fish.OnReleaseFish -= OnReleaseFish;
     }
 
     public void Update()
@@ -28,9 +30,9 @@ public class InputManager : MonoBehaviour
         CheckMouseWheelInput();
     }
 
-    private void OnStartMovingFish(DockType dockTarget)
+    private void OnStartMovingFish(Fish fish)
     {
-        Debug.Log($"Fish selected with dockTarget {dockTarget}");
+        IDock.Undock(fish);
         // TODO: Do some fancy shader target indicator
     }
 
@@ -39,16 +41,19 @@ public class InputManager : MonoBehaviour
         bool isDocked = false;
         foreach (var dock in docks)
         {
-            if (Vector3.Distance(fish.transform.position, dock.position) < dockingDistance)
-            {
-                fish.SetPosition(dock.position);
-                isDocked = true;                    
-                break;
-            }
+            if (
+                dock.HasVisitor ||
+                Vector3.Distance(fish.transform.position, dock.transform.position) > dockingDistance
+            ) continue;
+            
+            IDock.Dock(dock, fish);
+            isDocked = true;                    
+            break;
         }
+        
         if (!isDocked)
         {
-            fish.SetPosition(fish.origin);
+            fish.ResetPositionAndUndock();
         }
     }
 
