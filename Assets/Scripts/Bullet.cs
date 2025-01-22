@@ -5,9 +5,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float speed = 3.0f;
     [SerializeField] private float lifetime = 3.0f;
 
-    public void Start()
+    public void Initialise(float lifetime = 0f)
     {
-        Destroy(this.gameObject, lifetime);
+        Destroy(this.gameObject, lifetime > 0 ? lifetime : this.lifetime);
     }
 
     public void Update()

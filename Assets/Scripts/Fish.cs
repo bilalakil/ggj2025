@@ -8,9 +8,11 @@ public class Fish : MonoBehaviour, IDockable
     public bool IsCurrentlyDocked => CurrentlyDockedTo != null;
 
     [SerializeField] private float bubbleShootInterval = 2.0f;
+    public float bubbleLifetime = 3.0f;
+
     private float timeSinceLastBubbleShot;
     
-    public Bullet bulletPrefab;
+    public Bullet bubblePrefab;
 
     public Vector3 origin { get; private set; }
 
@@ -81,7 +83,13 @@ public class Fish : MonoBehaviour, IDockable
         timeSinceLastBubbleShot += Time.deltaTime;
         if (timeSinceLastBubbleShot < bubbleShootInterval) return;
         timeSinceLastBubbleShot -= bubbleShootInterval;
-        
-        Instantiate(bulletPrefab, transform.position, transform.rotation);
+
+        Shoot();
+    }
+
+    protected virtual void Shoot()
+    {
+        Debug.Log($"Basic shoot!");
+        Instantiate(bubblePrefab, transform.position, transform.rotation).GetComponent<Bullet>().Initialise(bubbleLifetime);
     }
 }
