@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private bool inDangerZone = false;
     [SerializeField] private float threshold = 0.1f;
     [SerializeField] private float speed = 1f;
-    [SerializeField] private float angleCorrection = -90f;
+    //[SerializeField] private float angleCorrection = -90f;
     [SerializeField] private float damageInterval = 2.0f;
     [SerializeField] private float damage = 2.0f;
     private float currentTimeInDangerZone;
