@@ -1,20 +1,21 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
     public Enemy enemyPrefab;
-    public List<Spawnpoint> spawnpoints = new List<Spawnpoint>();
     [SerializeField] private HealthManager healthManager;
     
     private int totalEnemyCount;
     private int remainingEnemyCount;
+    private IReadOnlyList<Spawnpoint> spawnpoints;
     private readonly List<Enemy> availablePooledEnemies = new();
     private readonly List<Enemy> activeEnemies = new();
 
     public void Awake()
     {
+        spawnpoints = FindObjectsByType<Spawnpoint>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        
         foreach (var spawner in spawnpoints)
         {
             totalEnemyCount += spawner.DesiredSpawnCount;
