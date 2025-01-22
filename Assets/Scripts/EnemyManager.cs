@@ -1,21 +1,50 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
     public Enemy enemyPrefab;
-    private List<Enemy> enemyList = new List<Enemy>();
     public List<Spawnpoint> spawnpoints = new List<Spawnpoint>();
     [SerializeField] private HealthManager healthManager;
-    private int totalEnemyNumberForLevel;
+    
+    private int totalEnemyCount;
+    private int remainingEnemyCount;
+    private readonly List<Enemy> availablePooledEnemies = new();
+    private readonly List<Enemy> activeEnemies = new();
+
+    public void Awake()
+    {
+        foreach (var spawner in spawnpoints)
+        {
+            totalEnemyCount += spawner.DesiredSpawnCount;
+        }
+
+        remainingEnemyCount = totalEnemyCount;
+    }
+
+    public void OnEnable()
+    {
+        SessionManager.I.OnReset += HandleReset;
+    }
+
+    public void OnDisable()
+    {
+        if (SessionManager.I != null) SessionManager.I.OnReset -= HandleReset;
+    }
+
+    public void Update()
+    {
+        TickSpawners();
+    }
 
     public void SpawnEnemy(Spawnpoint spawner)
     {
         Enemy enemy;
-        if (enemyList.Count > 0)
+        if (availablePooledEnemies.Count > 0)
         {
-            enemy = enemyList[0];
-            enemyList.Remove(enemy);
+            enemy = availablePooledEnemies[0];
+            availablePooledEnemies.Remove(enemy);
             enemy.transform.position = spawner.transform.position;
         }
         else
@@ -23,36 +52,44 @@ public class EnemyManager : MonoBehaviour
             enemy = Instantiate(enemyPrefab, spawner.transform.position, Quaternion.identity, this.transform);
         }
         enemy.Initialise(spawner.dangerZone, healthManager);
+        activeEnemies.Add(enemy);
         enemy.gameObject.SetActive(true);
         enemy.OnDisabled += HandleEnemyDisabled;
     }
 
-    public void Awake()
+    private void TickSpawners()
     {
-        foreach (var spawner in spawnpoints)
-        {
-            totalEnemyNumberForLevel += spawner.DesiredSpawnCount;
-        }
-    }
-
-    public void Update()
-    {
+        if (!SessionManager.I.IsPlaying) return;
         foreach (var spawner in spawnpoints)
         {
             if (!spawner.TickAndCheckSpawn()) continue;
             SpawnEnemy(spawner);
         }
     }
-
+ 
     private void HandleEnemyDisabled(Enemy enemy)
     {
         enemy.OnDisabled -= HandleEnemyDisabled;
-        totalEnemyNumberForLevel -= 1;
-        if (totalEnemyNumberForLevel <= 0)
+        availablePooledEnemies.Add(enemy);
+        activeEnemies.Remove(enemy);
+
+        if (!SessionManager.I.IsPlaying) return;
+        
+        remainingEnemyCount -= 1;
+        if (remainingEnemyCount <= 0)
         {
             Debug.Log("Win");
             Time.timeScale = 0;
         }
-        enemyList.Add(enemy);
+    }
+
+    private void HandleReset()
+    {
+        remainingEnemyCount = totalEnemyCount;
+
+        foreach (var enemy in activeEnemies.ToArray())
+        {
+            enemy.gameObject.SetActive(false);
+        }
     }
 }

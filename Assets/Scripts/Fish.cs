@@ -47,17 +47,23 @@ public class Fish : MonoBehaviour, IDockable
 
     private void OnMouseDown()
     {
+        if (SessionManager.I.IsPlaying) return;
+
         OnSelectFish?.Invoke(this);
         mousePosition = Input.mousePosition - GetMousePos();
     }
 
     private void OnMouseUp()
     {
+        if (SessionManager.I.IsPlaying) return;
+
         OnReleaseFish?.Invoke(this);
     }
 
     private void OnMouseDrag()
     {
+        if (SessionManager.I.IsPlaying) return;
+
         var target = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
         transform.position = new Vector3(target.x, yOffset, target.z);
     }

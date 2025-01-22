@@ -24,6 +24,16 @@ public class HealthManager : MonoBehaviour
     {
         InitialHealth = healthRemainingBacking = initialDangerZoneHealth;
     }
+
+    public void OnEnable()
+    {
+        SessionManager.I.OnReset += HandleReset;
+    }
+
+    public void OnDisable()
+    {
+        if (SessionManager.I != null) SessionManager.I.OnReset -= HandleReset;
+    }
     
     public void TakeHit(float damage)
     {
@@ -32,5 +42,10 @@ public class HealthManager : MonoBehaviour
         {
             Time.timeScale = 0;
         }
+    }
+
+    private void HandleReset()
+    {
+        HealthRemaining = InitialHealth;
     }
 }

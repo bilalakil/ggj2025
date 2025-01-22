@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
     
     private readonly List<Dock> docks = new();
 
-    void Start()
+    public void Start()
     {
         var dockObjects = FindObjectsByType<Dock>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var dockObject in dockObjects)
@@ -59,6 +59,8 @@ public class InputManager : MonoBehaviour
 
     private void CheckMouseWheelInput()
     {
+        if (SessionManager.I.IsPlaying) return;
+        
         var input = Input.mouseScrollDelta.y;
         if (input == 0) return;
         

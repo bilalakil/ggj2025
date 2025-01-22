@@ -17,7 +17,17 @@ public class Spawnpoint : MonoBehaviour
 
     public void Awake()
     {
-        timeSinceLastSpawn += spawnIntervalOffsetSec;
+        HandleReset();
+    }
+
+    public void OnEnable()
+    {
+        SessionManager.I.OnReset += HandleReset;
+    }
+
+    public void OnDisable()
+    {
+        if (SessionManager.I != null) SessionManager.I.OnReset -= HandleReset;
     }
 
     public void OnDrawGizmos()
@@ -39,5 +49,11 @@ public class Spawnpoint : MonoBehaviour
         timeSinceLastSpawn = 0;
         ++currentSpawnCount;
         return true;
+    }
+
+    private void HandleReset()
+    {
+        timeSinceLastSpawn = spawnIntervalSec - spawnIntervalOffsetSec;
+        currentSpawnCount = 0;
     }
 }
