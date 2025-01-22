@@ -40,7 +40,7 @@ public class HealthManager : MonoBehaviour
         HealthRemaining -= damage;
         if (HealthRemaining <= 0)
         {
-            Time.timeScale = 0;
+            SessionManager.I.LoseGame();
         }
     }
 

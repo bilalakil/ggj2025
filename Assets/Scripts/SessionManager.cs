@@ -24,6 +24,8 @@ public class SessionManager : MonoBehaviour
     public void OnEnable()
     {
         I = this;
+        IsPlaying = false;
+        Time.timeScale = 1;
     }
 
     public void OnDisable()
@@ -31,5 +33,21 @@ public class SessionManager : MonoBehaviour
         I = null;
     }
 
-    public void Reset() => OnReset?.Invoke();
+    public void Reset()
+    {
+        OnReset?.Invoke();
+        Time.timeScale = 1;
+    }
+
+    public void WinGame()
+    {
+        Debug.Log("Win");
+        Time.timeScale = 0;
+    }
+
+    public void LoseGame()
+    {
+        Debug.Log("Lose");
+        Time.timeScale = 0;
+    }
 }

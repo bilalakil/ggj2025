@@ -78,8 +78,7 @@ public class EnemyManager : MonoBehaviour
         remainingEnemyCount -= 1;
         if (remainingEnemyCount <= 0)
         {
-            Debug.Log("Win");
-            Time.timeScale = 0;
+            SessionManager.I.WinGame();
         }
     }
 
