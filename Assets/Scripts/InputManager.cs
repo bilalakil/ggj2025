@@ -5,16 +5,12 @@ public class InputManager : MonoBehaviour
 {
     public float dockingDistance = 1f;
     public float rotationPerMouseWheel = 10;
-    
-    private readonly List<Dock> docks = new();
+
+    private IReadOnlyList<Dock> docks;
 
     public void Start()
     {
-        var dockObjects = FindObjectsByType<Dock>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        foreach (var dockObject in dockObjects)
-        {
-            docks.Add(dockObject);
-        }
+        docks = FindObjectsByType<Dock>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         Fish.OnSelectFish += OnStartMovingFish;
         Fish.OnReleaseFish += OnReleaseFish;
     }
