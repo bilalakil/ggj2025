@@ -42,12 +42,14 @@ public class SessionManager : MonoBehaviour
     public void WinGame()
     {
         Debug.Log("Win");
+        AudioManager.I.Play(AudioManager.I.Refs.LevelClear, transform.position);
         Time.timeScale = 0;
     }
 
     public void LoseGame()
     {
         Debug.Log("Lose");
+        AudioManager.I.Play(AudioManager.I.Refs.GameOver, transform.position);
         Time.timeScale = 0;
     }
 }

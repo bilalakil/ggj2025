@@ -5,8 +5,9 @@
     [Serializable]
     public class AudioDetails
     {
-        public AudioClip[] clips;
+        public AudioClip[] clips = Array.Empty<AudioClip>();
         public AudioMixerGroup mixer;
+        public float volume = 0.5f;
         
         public AudioClip GetClip() => clips[UnityEngine.Random.Range(0, clips.Length)];
     }

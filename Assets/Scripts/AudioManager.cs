@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
         var audioSource = newObj.AddComponent<AudioSource>();
         audioSource.clip = actualClip;
         audioSource.spatialBlend = 1f;
-        audioSource.volume = 1f;
+        audioSource.volume = clip.volume;
         audioSource.outputAudioMixerGroup = clip.mixer;
         audioSource.Play();
         Destroy(newObj, actualClip.length);

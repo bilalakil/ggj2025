@@ -89,7 +89,6 @@ public class Fish : MonoBehaviour, IDockable
 
     protected virtual void Shoot()
     {
-        Debug.Log($"Basic shoot!");
         Instantiate(bubblePrefab, transform.position, transform.rotation).GetComponent<Bullet>().Initialise(bubbleLifetime);
     }
 }
