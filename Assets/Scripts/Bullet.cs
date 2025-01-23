@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -8,7 +7,7 @@ public class Bullet : MonoBehaviour
 
     public void Initialise(float lifetime = 0f)
     {
-        Destroy(this.gameObject, lifetime > 0 ? lifetime : this.lifetime);
+        Destroy(gameObject, lifetime > 0 ? lifetime : this.lifetime);
         AudioManager.I.Play(AudioManager.I.Refs.BubblePush, transform.position);
     }
 
@@ -23,12 +22,13 @@ public class Bullet : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             AudioManager.I.Play(AudioManager.I.Refs.BubblePop, transform.position);
-            Destroy(this.gameObject); // TODO: Add bubbles pool
+            Destroy(gameObject); // TODO: Add bubbles pool
         }
     }
 
     private void OnDestroy()
     {
+        if (SessionManager.I == null || !SessionManager.I.IsPlaying) return;
         AudioManager.I.Play(AudioManager.I.Refs.BubblePop, transform.position);
     }
 }

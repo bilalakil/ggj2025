@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Layout3C.unity
     guid: 8fbd5d47b191519438c2b30f13fb46dd
+  - enabled: 1
+    path: Assets/Scenes/ThanksScene.unity
+    guid: a8d335c955fa3894ca179e944eb75416
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

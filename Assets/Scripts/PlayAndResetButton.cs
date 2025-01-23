@@ -4,6 +4,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class PlayAndResetButton : MonoBehaviour
 {
+    [SerializeField] private Text buttonText;
+    
     private Button button;
 
     public void Awake()
@@ -45,6 +47,9 @@ public class PlayAndResetButton : MonoBehaviour
 
     private void HandlePlayingStateChanged(bool newValue)
     {
-        transform.localScale = new Vector3(newValue ? -1 : 1, 1, 1);
+        if (buttonText != null)
+        {
+            buttonText.text = newValue ? "Reset" : "Start";
+        }
     }
 }

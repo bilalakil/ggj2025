@@ -21,9 +21,30 @@ public class SessionManager : MonoBehaviour
     
     public event Action OnReset;
 
+    public enum WinLoseState
+    {
+        None,
+        Win,
+        Lose,
+    }
+    private WinLoseState winLoseStateBacking;
+
+    public event Action<WinLoseState> OnWinLoseStateChanged;
+    public WinLoseState CurrentWinLoseState
+    {
+        get => winLoseStateBacking;
+        set
+        {
+            if (value == winLoseStateBacking) return;
+            winLoseStateBacking = value;
+            OnWinLoseStateChanged?.Invoke(value);
+        }
+    }
+
     public void OnEnable()
     {
         I = this;
+        CurrentWinLoseState = WinLoseState.None;
         IsPlaying = false;
         Time.timeScale = 1;
     }
@@ -35,21 +56,22 @@ public class SessionManager : MonoBehaviour
 
     public void Reset()
     {
+        CurrentWinLoseState = WinLoseState.None;
         OnReset?.Invoke();
         Time.timeScale = 1;
     }
 
     public void WinGame()
     {
-        Debug.Log("Win");
         AudioManager.I.Play(AudioManager.I.Refs.LevelClear, transform.position);
         Time.timeScale = 0;
+        CurrentWinLoseState = WinLoseState.Win;
     }
 
     public void LoseGame()
     {
-        Debug.Log("Lose");
         AudioManager.I.Play(AudioManager.I.Refs.GameOver, transform.position);
         Time.timeScale = 0;
+        CurrentWinLoseState = WinLoseState.Lose;
     }
 }
