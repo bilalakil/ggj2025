@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76cfc6eaf864476a9891618005887d87, type: 3}
+  m_Name: AudioReferences
+  m_EditorClassIdentifier: 
+  BubblePop:
+    clips:
+    - {fileID: 8300000, guid: 883bceae651cab34ea05968867efe1ac, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  BubblePush:
+    clips:
+    - {fileID: 8300000, guid: 84c84d9e4227925428f9a2340e023dd8, type: 3}
+    - {fileID: 8300000, guid: 553d15ec86cd3e0419fd35cdaaae6c25, type: 3}
+    - {fileID: 8300000, guid: a1481f203dffe3c4aa173139f5c1dde5, type: 3}
+    - {fileID: 8300000, guid: b6967592190da5d44b1a49d1f2bac650, type: 3}
+    - {fileID: 8300000, guid: a527d930b3a95c144a044cef4226865c, type: 3}
+    - {fileID: 8300000, guid: 1826fa4f61521504eb176d4060ddf171, type: 3}
+    - {fileID: 8300000, guid: d4362427035261a46801bccb3f556e0a, type: 3}
+    - {fileID: 8300000, guid: 0258dd5dd3150d943b945cb02c75d3c3, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  EnemyDeath:
+    clips:
+    - {fileID: 8300000, guid: ba310c3ade3b69b4d8f0b9862b5bd0a8, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  StageRestart:
+    clips:
+    - {fileID: 8300000, guid: ff898099f931c85479169958811c8eb3, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  StageStart:
+    clips:
+    - {fileID: 8300000, guid: d220a19757b0739429a4e145fdb9618a, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  BGMusic:
+    clips:
+    - {fileID: 8300000, guid: 92f6ddf0964a8d749bfe937e472a8a86, type: 3}
+    mixer: {fileID: 0}
+  BGFXWaves:
+    clips:
+    - {fileID: 8300000, guid: 88b08e8e53bff274ba1ce27cd94b0e3a, type: 3}
+    mixer: {fileID: 0}
+  FishDockOn:
+    clips:
+    - {fileID: 8300000, guid: 10af3fe76c8a1ff49b60576e2a454213, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  FishDockOff:
+    clips:
+    - {fileID: 8300000, guid: 7361245b0e8aeac41ba227e199fd94d1, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  LevelClear:
+    clips:
+    - {fileID: 8300000, guid: 3894155577663f447aa17d5962698407, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}
+  GameOver:
+    clips:
+    - {fileID: 8300000, guid: 01f7513eb24849c4b8b82bd7b2b8c9c2, type: 3}
+    mixer: {fileID: 41899924389993800, guid: 8211faba077b9eb448f0931600ec1c78, type: 2}

@@ -15,7 +15,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float damageInterval = 2.0f;
     [SerializeField] private float damage = 2.0f;
     private float currentTimeInDangerZone;
-    
     public event Action<Enemy> OnDisabled;
     
     public void OnDisable()

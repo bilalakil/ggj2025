@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -8,6 +9,7 @@ public class Bullet : MonoBehaviour
     public void Initialise(float lifetime = 0f)
     {
         Destroy(this.gameObject, lifetime > 0 ? lifetime : this.lifetime);
+        AudioManager.I.Play(AudioManager.I.Refs.BubblePush, transform.position);
     }
 
     public void Update()
@@ -20,7 +22,13 @@ public class Bullet : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             other.gameObject.SetActive(false);
+            AudioManager.I.Play(AudioManager.I.Refs.BubblePop, transform.position);
             Destroy(this.gameObject); // TODO: Add bubbles pool
         }
+    }
+
+    private void OnDestroy()
+    {
+        AudioManager.I.Play(AudioManager.I.Refs.BubblePop, transform.position);
     }
 }

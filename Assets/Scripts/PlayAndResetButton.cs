@@ -31,8 +31,16 @@ public class PlayAndResetButton : MonoBehaviour
 
     private void HandleClicked()
     {
-        if (SessionManager.I.IsPlaying) UserCommands.ResetSession();
-        else UserCommands.StartPlaying();
+        if (SessionManager.I.IsPlaying)
+        {
+            UserCommands.ResetSession();
+            AudioManager.I.Play(AudioManager.I.Refs.StageRestart, transform.position);
+        }
+        else
+        {
+            UserCommands.StartPlaying();
+            AudioManager.I.Play(AudioManager.I.Refs.StageStart, transform.position);
+        }
     }
 
     private void HandlePlayingStateChanged(bool newValue)

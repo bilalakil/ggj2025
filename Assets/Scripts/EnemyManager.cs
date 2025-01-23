@@ -70,6 +70,11 @@ public class EnemyManager : MonoBehaviour
  
     private void HandleEnemyDisabled(Enemy enemy)
     {
+        if (SessionManager.I.IsPlaying)
+        {
+            AudioManager.I.Play(AudioManager.I.Refs.EnemyDeath, enemy.transform.position);
+        }
+        
         enemy.OnDisabled -= HandleEnemyDisabled;
         availablePooledEnemies.Add(enemy);
         activeEnemies.Remove(enemy);

@@ -19,7 +19,7 @@ public class HealthManager : MonoBehaviour
     }
 
     [SerializeField] private float initialDangerZoneHealth = 5.0f;
-
+    
     public void Awake()
     {
         InitialHealth = healthRemainingBacking = initialDangerZoneHealth;

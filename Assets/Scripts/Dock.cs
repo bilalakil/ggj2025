@@ -10,11 +10,13 @@ public class Dock : MonoBehaviour, IDock
     
     public virtual void DockVisitor(IDockable visitor)
     {
+        AudioManager.I.Play(AudioManager.I.Refs.FishDockOn, transform.position);
         HasVisitor = true;
     }
 
     public virtual void UndockVisitor()
     {
+        AudioManager.I.Play(AudioManager.I.Refs.FishDockOff, transform.position);
         HasVisitor = false;
     }
 }
