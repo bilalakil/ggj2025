@@ -4,14 +4,22 @@ using UnityEngine;
 public class Fish : MonoBehaviour, IDockable
 {
     public DockType dockTarget { get; protected set; } = DockType.Coral;
-    public IDock CurrentlyDockedTo { get; protected set; }
-    public bool IsCurrentlyDocked => CurrentlyDockedTo != null;
+    public event Action OnDockedChanged;
+    public IDock dockedToBacking;
 
-    [SerializeField] private float bubbleShootInterval = 2.0f;
+    public IDock CurrentlyDockedTo
+    {
+        get => dockedToBacking;
+        protected set
+        {
+            if (value == dockedToBacking) return;
+            dockedToBacking = value;
+            OnDockedChanged?.Invoke();
+        }
+    }
+
     public float bubbleLifetime = 3.0f;
 
-    private float timeSinceLastBubbleShot;
-    
     public Bullet bubblePrefab;
 
     public Vector3 origin { get; private set; }
@@ -35,11 +43,6 @@ public class Fish : MonoBehaviour, IDockable
     private void Start()
     {
         origin = transform.position;
-    }
-
-    public void Update()
-    {
-        TickShooter();
     }
 
     private Vector3 GetMousePos()
@@ -76,18 +79,7 @@ public class Fish : MonoBehaviour, IDockable
         transform.position = origin;
     }
     
-    private void TickShooter()
-    {
-        if (!IsCurrentlyDocked) return;
-
-        timeSinceLastBubbleShot += Time.deltaTime;
-        if (timeSinceLastBubbleShot < bubbleShootInterval) return;
-        timeSinceLastBubbleShot -= bubbleShootInterval;
-
-        Shoot();
-    }
-
-    protected virtual void Shoot()
+    public virtual void Shoot()
     {
         Instantiate(bubblePrefab, transform.position, transform.rotation).GetComponent<Bullet>().Initialise(bubbleLifetime);
     }
