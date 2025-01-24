@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
 
+[DefaultExecutionOrder(-99)]
 public class HealthManager : MonoBehaviour
 {
+    public static HealthManager I { get; private set; }
+    
     public float InitialHealth { get; private set; }
 
     private float healthRemainingBacking;
@@ -27,11 +30,13 @@ public class HealthManager : MonoBehaviour
 
     public void OnEnable()
     {
+        I = this;
         SessionManager.I.OnReset += HandleReset;
     }
 
     public void OnDisable()
     {
+        I = null;
         if (SessionManager.I != null) SessionManager.I.OnReset -= HandleReset;
     }
     
