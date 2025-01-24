@@ -24,7 +24,6 @@ public class Fish : MonoBehaviour, IDockable
 
     public Vector3 origin { get; private set; }
 
-    [SerializeField] private float yOffset = 2f;
     private Vector3 mousePosition;
     public static Action<Fish> OnSelectFish;
     public static Action<Fish> OnReleaseFish;
@@ -70,7 +69,27 @@ public class Fish : MonoBehaviour, IDockable
         if (SessionManager.I.IsPlaying) return;
 
         var target = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
-        transform.position = new Vector3(target.x, yOffset, target.z);
+        transform.position = ProjectPoint(target);
+    }
+
+    private Vector3 ProjectPoint(Vector3 point)
+    {
+        var dotProd = Vector3.Dot(Vector3.up, point - origin);
+        var vertProj = point - (dotProd * Vector3.up);
+        return vertProj;
+    }
+
+    private void OnDrawGizmos()
+    {
+        var mousePos = Input.mousePosition - mousePosition;
+        var target = Camera.main.ScreenToWorldPoint(mousePos);
+        var result = Vector3.Dot(target, Vector3.up);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(target, .5f);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(ProjectPoint(target), .5f);
     }
 
     public void ResetPositionAndUndock()
