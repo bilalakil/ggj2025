@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour, IDockable
 {
+    private static Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+    
     public DockType dockTarget { get; protected set; } = DockType.Coral;
     public event Action OnDockedChanged;
     public IDock dockedToBacking;
@@ -22,9 +24,10 @@ public class Fish : MonoBehaviour, IDockable
 
     public Bullet bubblePrefab;
 
-    public Vector3 origin { get; private set; }
+    private Camera camera;
+    private Vector3 origin;
+    private Vector3 originYOnly;
 
-    private Vector3 mousePosition;
     public static Action<Fish> OnSelectFish;
     public static Action<Fish> OnReleaseFish;
     
@@ -42,6 +45,8 @@ public class Fish : MonoBehaviour, IDockable
     private void Start()
     {
         origin = transform.position;
+        originYOnly = new Vector3(0, origin.y, 0);
+        camera = Camera.main;
     }
 
     private Vector3 GetMousePos()
@@ -54,7 +59,6 @@ public class Fish : MonoBehaviour, IDockable
         if (SessionManager.I.IsPlaying) return;
 
         OnSelectFish?.Invoke(this);
-        mousePosition = Input.mousePosition - GetMousePos();
     }
 
     private void OnMouseUp()
@@ -68,28 +72,10 @@ public class Fish : MonoBehaviour, IDockable
     {
         if (SessionManager.I.IsPlaying) return;
 
-        var target = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
-        transform.position = ProjectPoint(target);
-    }
-
-    private Vector3 ProjectPoint(Vector3 point)
-    {
-        var dotProd = Vector3.Dot(Vector3.up, point - origin);
-        var vertProj = point - (dotProd * Vector3.up);
-        return vertProj;
-    }
-
-    private void OnDrawGizmos()
-    {
-        var mousePos = Input.mousePosition - mousePosition;
-        var target = Camera.main.ScreenToWorldPoint(mousePos);
-        var result = Vector3.Dot(target, Vector3.up);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(target, .5f);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(ProjectPoint(target), .5f);
+        var mouseRay = camera.ScreenPointToRay(Input.mousePosition);
+        if (!groundPlane.Raycast(mouseRay, out var distance)) return;
+        var groundPosition = mouseRay.GetPoint(distance);
+        transform.position = groundPosition + originYOnly;
     }
 
     public void ResetPositionAndUndock()
