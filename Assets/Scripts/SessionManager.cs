@@ -16,6 +16,7 @@ public class SessionManager : MonoBehaviour
             if (value == isPlaying) return;
             isPlaying = value;
             OnPlayingStateChanged?.Invoke(value);
+            if (isPlaying) AudioManager.I.Play(AudioManager.I.Refs.StageStart);
         }
     }
     
@@ -56,6 +57,7 @@ public class SessionManager : MonoBehaviour
 
     public void Reset()
     {
+        AudioManager.I.Play(AudioManager.I.Refs.StageRestart);
         CurrentWinLoseState = WinLoseState.None;
         OnReset?.Invoke();
         Time.timeScale = 1;

@@ -25,31 +25,17 @@ public class PlayAndResetButton : MonoBehaviour
     {
         button.onClick.RemoveListener(HandleClicked);
 
-        if (SessionManager.I != null)
-        {
-            SessionManager.I.OnPlayingStateChanged -= HandlePlayingStateChanged;
-        }
+        if (SessionManager.I != null) SessionManager.I.OnPlayingStateChanged -= HandlePlayingStateChanged;
     }
 
     private void HandleClicked()
     {
-        if (SessionManager.I.IsPlaying)
-        {
-            UserCommands.ResetSession();
-            AudioManager.I.Play(AudioManager.I.Refs.StageRestart, transform.position);
-        }
-        else
-        {
-            UserCommands.StartPlaying();
-            AudioManager.I.Play(AudioManager.I.Refs.StageStart, transform.position);
-        }
+        if (SessionManager.I.IsPlaying) UserCommands.ResetSession();
+        else UserCommands.StartPlaying();
     }
 
     private void HandlePlayingStateChanged(bool newValue)
     {
-        if (buttonText != null)
-        {
-            buttonText.text = newValue ? "Reset" : "Start";
-        }
+        if (buttonText != null) buttonText.text = newValue ? "Reset" : "Start";
     }
 }
