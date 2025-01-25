@@ -24,7 +24,7 @@ public class Fish : MonoBehaviour, IDockable
 
     public Bullet bubblePrefab;
 
-    private Camera camera;
+    private new Camera camera;
     private Vector3 origin;
     private Vector3 originYOnly;
 
@@ -49,28 +49,23 @@ public class Fish : MonoBehaviour, IDockable
         camera = Camera.main;
     }
 
-    private Vector3 GetMousePos()
-    {
-        return Camera.main.WorldToScreenPoint(transform.position);
-    }
-
     private void OnMouseDown()
     {
-        if (SessionManager.I.IsPlaying) return;
+        if (SessionManager.I?.IsPlaying == true) return;
 
         OnSelectFish?.Invoke(this);
     }
 
     private void OnMouseUp()
     {
-        if (SessionManager.I.IsPlaying) return;
+        if (SessionManager.I?.IsPlaying == true) return;
 
         OnReleaseFish?.Invoke(this);
     }
 
     private void OnMouseDrag()
     {
-        if (SessionManager.I.IsPlaying) return;
+        if (SessionManager.I?.IsPlaying == true) return;
 
         var mouseRay = camera.ScreenPointToRay(Input.mousePosition);
         if (!groundPlane.Raycast(mouseRay, out var distance)) return;

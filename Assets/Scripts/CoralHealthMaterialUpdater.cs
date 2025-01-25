@@ -17,6 +17,12 @@ public class CoralHealthMaterialUpdater : MonoBehaviour
 
     public void OnEnable()
     {
+        if (HealthManager.I == null)
+        {
+            Destroy(this);
+            return;
+        }
+        
         HealthManager.I.OnHealthRemainingChanged += UpdateHealth;
         UpdateHealth();
     }
